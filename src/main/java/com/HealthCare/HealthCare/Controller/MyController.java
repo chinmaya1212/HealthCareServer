@@ -7,9 +7,15 @@ import com.HealthCare.HealthCare.models.Doctors;
 import com.HealthCare.HealthCare.models.Response;
 import com.HealthCare.HealthCare.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.internet.InternetAddress;
+import javax.print.Doc;
+import java.util.List;
 import java.util.Optional;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -25,6 +31,10 @@ public class MyController {
     private DoctorRepositoy doctorRepositoy;
     @Autowired
     private EmailSenderService emailService;
+    @Autowired
+    private MongoTemplate mongoTemplate;
+
+
     @PostMapping("/signin")
     public Response Login(@RequestBody User user){
         Optional<User> li=this.userRepositoy.findById(user.getEmail());
@@ -87,6 +97,11 @@ public class MyController {
     public Response addDoctors(@RequestBody Doctors doctors){
         Optional<Doctors> li=doctorRepositoy.findById(doctors.getEmail());
         if(li.isEmpty()){
+            doctors.setSlot11_12(false);
+            doctors.setSlot10_11(false);
+            doctors.setSlot1_2(false);
+            doctors.setSlot2_3(false);
+
             this.doctorRepositoy.save(doctors);
             return new Response("Added Successfully");
         }
@@ -101,6 +116,16 @@ public class MyController {
         String body="Hii,welcome to our app your email is "+user.getEmail()+" and your password is "+user.getPassword()+" Keep this mail with you for your future reference";
         emailService.sendEmail(user.getEmail(),subject,body);
         return  new Response("sucess");
+    }
+    @GetMapping("/getdoctorlist")
+    public List<Doctors> getdoctor(){
+        System.out.println("call");
+        return this.doctorRepositoy.findAll();
+       // Query query = new Query();
+        //query.addCriteria(Criteria.where("specialist").is("Tumor"));
+
+// Execute the query and retrieve the results
+        //return  mongoTemplate.find(query, Doctors.class);
     }
     @GetMapping("/test")
     public String check(){
