@@ -120,12 +120,16 @@ public class MyController {
     @GetMapping("/getdoctorlist")
     public List<Doctors> getdoctor(){
         System.out.println("call");
-        return this.doctorRepositoy.findAll();
-       // Query query = new Query();
-        //query.addCriteria(Criteria.where("specialist").is("Tumor"));
 
-// Execute the query and retrieve the results
-        //return  mongoTemplate.find(query, Doctors.class);
+        return this.doctorRepositoy.findAll();
+    }
+    @GetMapping("/getdoctorbycategory")
+    public List<Doctors> getdoctorbyCategory(@RequestParam("q") String name){
+        String regxname=".*"+name+".*";
+
+        Query query=new Query();
+        query.addCriteria(Criteria.where("specialist").regex(regxname,"i"));
+        return mongoTemplate.find(query,Doctors.class);
     }
     @GetMapping("/test")
     public String check(){
