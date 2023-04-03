@@ -11,11 +11,13 @@ public class User {
     private String email;
     private String name;
     private String password;
+    private int money;
 
-    public User(String email, String name, String password) {
+    public User(String email, String name, String password,int money) {
         this.email = email;
         this.name = name;
         this.password = password;
+        this.money=money;
     }
 
     public String getEmail() {
@@ -40,5 +42,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public int getMoney() {
+        return money;
+    }
+
+    public void setMoney(int money) {
+        this.money = money;
     }
 }
