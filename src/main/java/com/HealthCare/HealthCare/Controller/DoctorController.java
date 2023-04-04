@@ -60,6 +60,20 @@ public class DoctorController {
         System.out.println(email);
         return this.doctorRepositoy.findById(email);
     }
+    @GetMapping("/sendEmail")
+    public String sendEmail(@RequestParam("email") String email,@RequestParam("slot") String slot){
+        System.out.println("jhhj");
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_YEAR, 1);
+        Date tomorrowDate = calendar.getTime();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        String formattedDate = sdf.format(tomorrowDate);
+        emailSenderService.sendEmail(email,"Slot Booked","You Can visit the Clicn on "+formattedDate+" on your Booked Slot"+slot);
+        System.out.println("Tomorrow's date is: " + formattedDate);
+        return "sucesss";
+
+    }
     @PostMapping("/updatedoctorslot")
     public String updateDoctorSlot(@RequestBody Doctors doctors){
         System.out.println("hwl");
@@ -70,15 +84,6 @@ public class DoctorController {
         doctor.get().setSlot1_2(doctors.isSlot1_2());
         doctor.get().setSlot2_3(doctors.isSlot2_3());
         doctorRepositoy.save(doctor.get());
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DAY_OF_YEAR, 1);
-        //Date tomorrowDate = calendar.getTime();
-
-        //SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-        //String formattedDate = sdf.format(tomorrowDate);
-        //emailSenderService.sendEmail("babunchandapur@gmail.com","Slot Booked","You Can visit the Clicn on "+formattedDate+" ");
-       // System.out.println("Tomorrow's date is: " + formattedDate);
-
         return "sucesss";
 
     }

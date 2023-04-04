@@ -23,7 +23,7 @@ public class HealthCareApplication {
 		SpringApplication.run(HealthCareApplication.class, args);
 	}
 	// Runs every day at 11:15 PM
-	@Scheduled(cron = "0 32 10 * * ?")
+	@Scheduled(cron = "0 37 16 * * ?")
 	public void resetAboutField() {
 		System.out.println("Enter to update!!!!!");
 		List<Doctors> doctorsList = this.doctorRepositoy.findAll();
