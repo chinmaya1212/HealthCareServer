@@ -41,10 +41,17 @@ public class DoctorController {
 
 
     }
-    @GetMapping("/getdoctorlist")
+    @GetMapping("/getdoctorlistgetdoctorlistbyclicnvisit")
     public List<Doctors> getdoctor(){
         System.out.println("call");
+        Query query = new Query(Criteria.where("ishomvisit").is(false));
 
+        return mongoTemplate.find(query, Doctors.class);
+
+
+    }
+    @GetMapping("/getdoctorlist")
+    public List<Doctors> getdoctorlist(){
         return this.doctorRepositoy.findAll();
     }
     @GetMapping("/getdoctorbycategory")
@@ -87,5 +94,12 @@ public class DoctorController {
         return "sucesss";
 
     }
+    @GetMapping("/getDoctorsByHomeVisit")
+    public List<Doctors> getDoctorsByHomeVisit() {
+        Query query = new Query(Criteria.where("ishomvisit").is(true));
+
+        return mongoTemplate.find(query, Doctors.class);
+    }
+
 
 }
